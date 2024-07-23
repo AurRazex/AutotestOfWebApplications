@@ -11,3 +11,9 @@ Screenshots https://github.com/AurRazex/AutotestOfWebApplications/tree/dc9dd11fd
 Test Files https://github.com/AurRazex/AutotestOfWebApplications/tree/c3b3478705e692b3fefcd86c76a9ddfcb23d732e/src/test/java/Lesson2
 
 Screenshots https://github.com/AurRazex/AutotestOfWebApplications/tree/c3b3478705e692b3fefcd86c76a9ddfcb23d732e/src/test/java/resources
+
+Урок 6. Семинар: Selenide
+
+Test Files https://github.com/AurRazex/AutotestOfWebApplications/tree/34d0033336fcef705bcaa90329e903a4f4a72ebf/src/test/java/Lesson3
+
+Screenshots https://github.com/AurRazex/AutotestOfWebApplications/tree/34d0033336fcef705bcaa90329e903a4f4a72ebf/build/reports/tests
