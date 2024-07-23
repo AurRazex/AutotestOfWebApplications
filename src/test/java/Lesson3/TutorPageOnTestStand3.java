@@ -1,59 +1,47 @@
-package Lesson2;
+package Lesson3;
 
+import com.codeborne.selenide.Selenide;
+import com.codeborne.selenide.WebDriverRunner;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.openqa.selenium.OutputType;
-import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.chrome.ChromeOptions;
-import org.openqa.selenium.support.ui.WebDriverWait;
-
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.time.Duration;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class TutorPageOnTestStand2 {
+public class TutorPageOnTestStand3 {
+
 
     private WebDriver driver;
-    private WebDriverWait wait;
     private LoginPage loginPage;
     private MainPage mainPage;
 
     private static final String login = "Student-16";
     private static final String password = "565005b2c6";
+    private static final String fullName = "16 Student";
     private static final String baseURL = "https://test-stand.gb.ru/login";
 
 
     @BeforeEach
     public void setUp() {
-        ChromeOptions chromeOptions = new ChromeOptions();
-        chromeOptions.addArguments("--start-maximized");
-        driver = new ChromeDriver(chromeOptions);
-        driver.get(baseURL);
-        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
-        wait = new WebDriverWait(driver, Duration.ofSeconds(10));
-        loginPage = new LoginPage(driver, wait);
+        Selenide.open(baseURL);
+        driver = WebDriverRunner.getWebDriver();
     }
 
-
     @Test
-    public void groupAddingTest() {
+    public void groupAddingTest()  {
         successfulAuthorization();
         String groupTestName = "New Test Group " + System.currentTimeMillis();
+        MainPage mainPage = Selenide.page(MainPage.class);
         mainPage.createGroup(groupTestName);
-
     }
 
     @Test
     void groupStatusActiveOrInactiveTest() {
         successfulAuthorization();
         String groupTestName = "New Test Group " + System.currentTimeMillis();
+        MainPage mainPage = Selenide.page(MainPage.class);
         mainPage.createGroup(groupTestName);
         mainPage.closeCreateGroupModalWindow();
         assertEquals("active", mainPage.getStatusOfGroupWithTitle(groupTestName));
@@ -63,19 +51,19 @@ public class TutorPageOnTestStand2 {
         assertEquals("active", mainPage.getStatusOfGroupWithTitle(groupTestName));
     }
 
-
     @Test
-    void authorizationWithoutEnteringLoginAndPasswordShouldReturnTest() throws IOException {
+    void authorizationWithoutEnteringLoginAndPasswordShouldReturnTest()  {
+        LoginPage loginPage = Selenide.page(LoginPage.class);
         loginPage.clickLoginButton();
         assertEquals("401 Invalid credentials.", loginPage.getErrorBlockText());
         getScreen();
     }
 
-
     @Test
-    void studentStatusActiveOrInactiveTest() throws IOException {
+    void studentStatusActiveOrInactiveTest()  {
         successfulAuthorization();
         String groupName = "New Test Group " + System.currentTimeMillis();
+        MainPage mainPage = Selenide.page(MainPage.class);
         mainPage.createGroup(groupName);
         mainPage.closeCreateGroupModalWindow();
         int studentQuantity = 2;
@@ -95,22 +83,31 @@ public class TutorPageOnTestStand2 {
         getScreen();
     }
 
+    @Test
+    void valueFullNameInProfilePageTest() {
+        successfulAuthorization();
+        MainPage mainPage = Selenide.page(MainPage.class);
+        mainPage.clickProfileButton();
+        ProfilePage profilePage = Selenide.page(ProfilePage.class);
+        assertEquals(fullName, profilePage.getFullNameInAdditionalInfo());
+        assertEquals(fullName, profilePage.getFullNameUnderAvatar());
+    }
+
 
     private void successfulAuthorization() {
+        LoginPage loginPage = Selenide.page(LoginPage.class);
         loginPage.login(login, password);
-        mainPage = new MainPage(driver, wait);
+        MainPage mainPage = Selenide.page(MainPage.class);
         assertTrue(mainPage.getUsernameLabelText().contains(login));
     }
 
-    private void getScreen() throws IOException {
-        byte[] screenshotBytes = ((TakesScreenshot) driver).getScreenshotAs(OutputType.BYTES);
-        Files.write(Path.of(
-                "src/test/java/screenshots/Lesson2_" + System.currentTimeMillis() + ".png"), screenshotBytes);
+    private void getScreen()  {
+        Selenide.screenshot("Lesson3_" + System.currentTimeMillis());
     }
 
 
     @AfterEach
     public void closeApp() {
-        driver.quit();
+        WebDriverRunner.closeWebDriver();
     }
 }

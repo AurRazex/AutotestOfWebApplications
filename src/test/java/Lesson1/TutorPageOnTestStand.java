@@ -73,7 +73,7 @@ public class TutorPageOnTestStand {
     private void getScreen() throws IOException {
         byte[] screenshotBytes = ((TakesScreenshot) driver).getScreenshotAs(OutputType.BYTES);
         Files.write(Path.of(
-                "src/test/java/resources/screenshot_" + System.currentTimeMillis() + ".png"), screenshotBytes);
+                "src/test/java/screenshots/Lesson1_" + System.currentTimeMillis() + ".png"), screenshotBytes);
     }
 
 
