@@ -1,4 +1,4 @@
-# AutotestOfWebApplications
+# Автотестирование веб-приложений
 
 Урок 2. Семинар: Введение в Selenium WebDriver
 
